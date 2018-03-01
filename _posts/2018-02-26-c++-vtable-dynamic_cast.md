@@ -63,11 +63,11 @@ Derived::_ZTV7Derived: 3u entries
 16    (int (*)(...))Derived::foo
 {% endhighlight %}
 因为是64 bit的Ubuntu OS，所以Vtable每个表项占用8 byte。g++使用的是[Itanium C++ ABI]规范，我们根据Itanium C++ ABI来具体分析下Vtable里各表项含义。在[Virtual Table Components and Order]章节，前两项是关于虚继承的，暂时不考虑：
-1.  offset_to_top
+1.  top_offset
 
     >The offset to top holds the displacement to the top of the object from the location within the object of the virtual table pointer that addresses this virtual table, as a  ptrdiff_t. It is always present. The offset provides a way to find the top of the object from any base subobject with a virtual table pointer. This is necessary for dynamic_cast<void*> in particular.
 
-    构造派生类Derived对象时，Derived的Vtable会替代Base的Vtable，当运行`Base *basePtr = new Derived()`时，basePtr指向的是Derived的Vtable而不是Base的Vtable，所以dynamic_cast根据offset_to_top值重新获取到派生类对象的首地址。因为Derived类只有一个Base基类，所以offset_to_top值为0。后面会分析有多个直接基类情况下offset_to_top值的变化。
+    构造派生类Derived对象时，Derived的Vtable会替代Base的Vtable，当运行`Base *basePtr = new Derived()`时，basePtr指向的是Derived的Vtable而不是Base的Vtable，所以dynamic_cast根据top_offset值重新获取到派生类对象的首地址。因为Derived类只有一个Base基类，所以top_offset值为0。后面会分析有多个直接基类情况下top_offset值的变化。
 2.  typeinfo pointer
 
     >The typeinfo pointer points to the typeinfo object used for RTTI. It is always present. All entries in each of the virtual tables for a given class must point to the same typeinfo object. A correct implementation of typeinfo equality is to check pointer equality, except for pointers (directly or indirectly) to incomplete types. The typeinfo pointer is a valid pointer for polymorphic classes, i.e. those with virtual functions, and is zero for non-polymorphic classes.
@@ -143,7 +143,7 @@ Derived (0x0x7fb91b5d8690) 0
   Base2 (0x0x7fb91b52b660) 8 nearly-empty
       vptr=((& Derived::_ZTV7Derived) + 48u)
 {% endhighlight %}
-* 基类Base2的offset_to_top变为-8，因为基类Base1对象的大小为8 byte，基类Base2对象的首地址=Derived对象的首地址 + Base1对象的大小。如果改变基类Base1的大小，比如在基类Base1里定义数据成员，基类Base2的offset_to_top的值会跟着改变；
+* 基类Base2的top_offset变为-8，因为基类Base1对象的大小为8 byte，基类Base2对象的首地址=Derived对象的首地址 + Base1对象的大小。如果改变基类Base1的大小，比如在基类Base1里定义数据成员，基类Base2的top_offset的值会跟着改变；
 * 其实Base1、Base2和Derived对象共享同一个Derived的Vtable。因为`c++filt _ZTV7Derived`得到的结果都是`vtable for Derived`。只不过，各自的vprt分别指向Derived的Vtable不同的偏移地址；
 * Base1和Base2所指向的typeinfo均为Derived。
 
