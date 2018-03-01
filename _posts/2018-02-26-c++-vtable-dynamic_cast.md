@@ -72,7 +72,7 @@ Derived::_ZTV7Derived: 3u entries
 
     >The typeinfo pointer points to the typeinfo object used for RTTI. It is always present. All entries in each of the virtual tables for a given class must point to the same typeinfo object. A correct implementation of typeinfo equality is to check pointer equality, except for pointers (directly or indirectly) to incomplete types. The typeinfo pointer is a valid pointer for polymorphic classes, i.e. those with virtual functions, and is zero for non-polymorphic classes.
 
-    如果执行`typeid(*basePtr).name()`，得到的是`7Derived`（数字7表示类名Derived的长度）而不是`4Base`，同时也验证basePtr确实指向的是Derived的Vtable。
+    如果执行`typeid(*basePtr).name()`，得到的是`7Derived`（数字7表示类名Derived的长度）而不是`4Base`；同时`c++filt _ZTI7Derived`得到的结果也是`typeinfo for Derived`。
 
 ### 3. 带虚函数的多个直接基类
 {% highlight c++ linenos %}
@@ -144,8 +144,10 @@ Derived (0x0x7fb91b5d8690) 0
       vptr=((& Derived::_ZTV7Derived) + 48u)
 {% endhighlight %}
 * 基类Base2的offset_to_top变为-8，因为基类Base1对象的大小为8 byte，基类Base2对象的首地址=Derived对象的首地址 + Base1对象的大小。如果改变基类Base1的大小，比如在基类Base1里定义数据成员，基类Base2的offset_to_top的值会跟着改变；
-* 其实Base1、Base2和Derived对象共享同一个Derived的Vtable。只不过，各自的vprt指向Vtable不同的偏移地址；
-* Base1和Base2所指向的typeinfo pointer均为_ZTI7Derived，奇怪的是：即使Base1和Base2之间没有继承关系，Base1和Base2之间竟然可以相互用dynamic_cast强制转换为对方，而用static_cast会编译出错：
+* 其实Base1、Base2和Derived对象共享同一个Derived的Vtable。因为`c++filt _ZTV7Derived`得到的结果都是`vtable for Derived`。只不过，各自的vprt分别指向Derived的Vtable不同的偏移地址；
+* Base1和Base2所指向的typeinfo均为Derived。
+
+奇怪的是：即使Base1和Base2之间没有继承关系，Base1和Base2之间竟然可以相互用dynamic_cast强制转换为对方，而这时如果用static_cast会编译出错：
 {% highlight c++ %}
 Derived derived;
 Base1 *base1Ptr = &derived;
