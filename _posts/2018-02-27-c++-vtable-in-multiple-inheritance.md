@@ -3,7 +3,7 @@ layout: post
 title:  "多重继承的Vtable"
 category: C++
 ---
-在上一篇“[用C＋＋ Vtable分析dynamic_cast]({{ site.baseurl }}{% post_url 2018-02-26-c++-vtable-dynamic_cast %})”初步分析Vtable后，这篇继续分析多重继承的Vtable。
+在上一篇“[用C＋＋ Vtable分析dynamic_cast]({{ site.baseurl }}{% post_url 2018-02-26-c++-vtable-for-dynamic_cast %})”初步分析Vtable后，这篇继续分析多重继承的Vtable。
 {% highlight c++ %}
 class Base1 {
 public:
