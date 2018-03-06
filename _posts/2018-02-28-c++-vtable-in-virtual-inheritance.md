@@ -100,7 +100,7 @@ Derived (0x0x7f18c0d42f08) 0
 0x4009c8 <typeinfo for VBase+8>:        0x00000000004009d0      0x0000657361425635
 0x4009d8:       0x000000543b031b01      0xfffffcb800000009
 {% endhighlight %}
-因为对象d的vtable包含3个表项（24 bytes），VTT信息无法显示出来，那么看看从地址0x400960开始的内存内容：（vtable首地址0x400968 - 0x8）：
+因为对象d的vtable包含3个表项（24 bytes），而gdb是16 bytes对齐显示，所以VTT信息无法显示出来，那么看看从地址0x400960开始的内存内容：（vtable首地址0x400968 - 0x8）：
 {% highlight c++ %}
 (gdb) x/16xg 0x400960
 0x400960 <_IO_stdin_used>:      0x0000000000020001      0x0000000000000010
