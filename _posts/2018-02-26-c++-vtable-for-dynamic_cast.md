@@ -38,12 +38,14 @@ assert(derivedPtr);
 derivedPtr->foo();
 delete derivedPtr;
 {% endhighlight %}
-在没有任何虚函数情况下，g++编译出错：  
-`error: cannot dynamic_cast ‘basePtr’ (of type ‘class Base*’) to type ‘class Derived*’ (source type is not polymorphic)`  
+在没有任何虚函数情况下，g++编译出错：
+{% highlight c++ %}
+error: cannot dynamic_cast ‘basePtr’ (of type ‘class Base*’) to type ‘class Derived*’ (source type is not polymorphic)
+{% endhighlight %}
 也就是说dynamic_cast必须在多态时才能使用。这种情况下可以使用static_cast来代替dynamic_cast。
 
 ### 2. 虚函数
-只需要将上面Base类的foo函数加上virtual关键字。可以得到如下结果：  
+只需要将上面Base类的foo函数加上virtual关键字。可以得到如下结果：
 {% highlight c++ %}
 Derived::foo()
 Derived::foo()

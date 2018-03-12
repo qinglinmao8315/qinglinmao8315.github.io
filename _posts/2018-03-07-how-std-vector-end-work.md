@@ -11,9 +11,9 @@ for (vector<int>::iterator iter = v.begin(); iter != v.end(); ++iter)
     // do someting with iter
 }
 {% endhighlight %}
-其实，只需要将container类型进行替换，STL所有的container（顺序容器和关联容器）的遍历都可以套用上面的代码。这篇文章重点讨end（）函数的实现。
+其实，只需要将std::vector进行替换，STL所有的container（顺序容器和关联容器）的遍历都可以套用上面的代码。这篇文章重点讨论vector::end()函数的实现。
 
-STL container的遍历一般都是借助于与container相对应的iterator来完成，要进行遍历操作就会涉及到从哪儿开始到哪儿结束——也就是遍历范围的问题，STL container对应的遍历范围为：[begin(), end())：
+STL container的遍历一般都是借助于与container相对应的iterator来完成，要进行遍历就会涉及到从哪儿开始和到哪儿结束—也就是遍历范围的问题，STL container对应的遍历范围为：[begin(), end())：
 * begin()：返回的是指向container第一个元素的iterator；
 * end()：仅仅是一个占位符（placeholder），返回的iterator指向的是container最后一个元素的后面一个元素（iterators refer to one past the last element），所以遍历时是不能访问这个元素的。下面着重分析下该end()函数实现原理。
 * begin() == end()意味着container是空的。
@@ -74,7 +74,7 @@ typedef typename __gnu_cxx::__alloc_traits<_Tp_alloc_type>::pointer pointer;
 
 traits主要是为使用者提供类型信息。
 
-下面用一个实例化的vector\<int\>类型来分析_Tp_alloc_type和pointer这两个类型定义。因为类型pointer依赖类型_Tp_alloc_type，所以先实例化得到类型_Tp_alloc_type。
+下面用一个实例化的vector\<int\>类型来分析_Tp_alloc_type和pointer这两个类型定义。因为类型pointer依赖类型_Tp_alloc_type，所以先实例化分析类型_Tp_alloc_type。
 {% highlight c++ %}
 vector<int> v;
 {% endhighlight %}
@@ -279,7 +279,7 @@ vector.cc:7:58: error: no match for ‘operator<’ (operand types are ‘std::_
      for (std::list<int>::iterator iter = l.begin(); iter < l.end(); ++iter)
                                                           ^
 {% endhighlight %}
-原因是：只有std::vector和std::deque支持`<`和`!=`，而其它的container只支持`!=`。
+原因是：只有std::vector和std::deque同时支持`<`和`!=`，而其它的container只支持`!=`。
 
 ### 4. vector::iterator越界问题
 先看下面代码：
