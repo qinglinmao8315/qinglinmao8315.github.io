@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "C++构造函数中的异常"
+title: "C++构造函数中的异常"
 category: C++
 ---
 C++构造函数是否可以抛出异常？  

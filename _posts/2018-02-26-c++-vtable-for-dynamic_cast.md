@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "用C＋＋ Vtable分析dynamic_cast"
+title: "用C＋＋ Vtable分析dynamic_cast"
 category: C++
 ---
 在C++中，派生类和基类指针或者引用之间的转换有两种形式：

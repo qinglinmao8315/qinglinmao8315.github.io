@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "分析C++ vector::end的实现原理"
+title: "分析C++ vector::end的实现原理"
 category: C++
 ---
 先看看遍历std::vector的代码：

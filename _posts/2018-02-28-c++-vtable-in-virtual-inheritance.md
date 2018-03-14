@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "虚继承的Vtable"
+title: "虚继承的Vtable"
 category: C++
 ---
 在上一篇“[多重继承的Vtable]({{ site.baseurl }}{% post_url 2018-02-27-c++-vtable-in-multiple-inheritance %})”分析多重继承的Vtable后，这篇继续分析虚继承的Vtable。在虚继承下，对给定虚基类，无论该类在派生层次中作为虚基类出现多少次，只继承一个共享的基类子对象。虚继承除了能解决多个相同基类对象引起的歧义外，还可以节省对象内存空间（共享一个虚基类对象）。
