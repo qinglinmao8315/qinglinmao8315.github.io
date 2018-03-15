@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Linux Page Cache的理解"
-category: storage
+category: Linux
 ---
 因为硬盘和内存的读写性能差距巨大，Linux默认情况是以异步方式读写文件的。比如调用系统函数open()打开或者创建文件时缺省情况下是带有O_ASYNC flag的。Linux借助于内核的page cache来实现这种异步操作。引用《Understanding the Linux Kernel, 3rd Edition》中关于`page cache`的定义：
 >The page cache is the main disk cache used by the Linux kernel. In most cases, the kernel refers to the page cache when reading from or writing to disk. New pages are added to the page cache to satisfy User Mode processes's read requests. If the page is not already in the cache, a new entry is added to the cache and filled with the data read from the disk. If there is enough free memory, the page is kept in the cache for an indefinite period of time and can then be reused by other processes without accessing the disk.  
